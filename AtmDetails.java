@@ -13,33 +13,46 @@ public class AtmDetails {
         System.out.println("3. Withdraw");
         System.out.println("4. Exit");
     }
+    
+    public void processUserInput(int balance) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int choice;
 
-    public void processTransaction(int balance) {
-    try (Scanner scanner = new Scanner(System.in)) {
-        switch (balance) {
-            case 1:
-                System.out.println("Current Balance: $" + userAccount.getBalance());
-                break;
-            case 2:
-                System.out.print("Enter deposit amount: $");
-                double depositAmount = scanner.nextDouble();
-                userAccount.deposit(depositAmount);
-                System.out.println("Deposit successful. New Balance: $" + userAccount.getBalance());
-                break;
-            case 3:
-                System.out.print("Enter withdrawal amount: $");
-                double withdrawalAmount = scanner.nextDouble();
-                if (userAccount.withdraw(withdrawalAmount)) {
-                    System.out.println("Withdrawal successful. New Balance: $" + userAccount.getBalance());
+            do {
+                displayOptions();
+                System.out.print("Enter your choice (1-4): ");
+                choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                    System.out.println("Current balance: $" + userAccount.getBalance());
+                    break;
+
+                    case 2:
+                        System.out.print("Enter deposit amount: ");
+                        double depositAmount = scanner.nextDouble();
+                        userAccount.deposit(depositAmount);
+                        System.out.println("Deposit successful. New balance: $" + userAccount.getBalance());
+                        break;
+
+                    case 3:
+                    System.out.print("Enter withdrawal amount: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    if (userAccount.withdraw(withdrawAmount)) {
+                        System.out.println("Withdrawal successful. Remaining balance: $" + userAccount.getBalance());
+                    }
+                    break;
+
+                    case 4:
+                        System.out.println("Exiting. Thank you!");
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 1 and 4.");
                 }
-                break;
-            case 4:
-                System.out.println("Exits. Thank you!");
-                break;
-            default:
-                System.out.println("Invalid. Please choose a valid option.");
+
+            } while (choice != 4);
         }
-    }
     }
 
     public static void main(String[] args) {
@@ -50,8 +63,9 @@ public class AtmDetails {
                 atm.displayOptions();
                 System.out.print("Choose an option: ");
                 int balance = scanner.nextInt();
-                atm.processTransaction(balance);
+                atm.processUserInput(balance);
             }
         }
+        
     }
 }
